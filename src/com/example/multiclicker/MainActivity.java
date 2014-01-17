@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
 	
 	int counter = 0;
 	Button btn1;
-	EditText counterText;
+	TextView counterText;
 	
 	//Jan. 17th : http://simpledeveloper.com/how-to-build-simple-counter-android-app/
 
@@ -20,7 +20,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		btn1 = (Button)findViewById(R.id.button_text);
-		counterText = (EditText)findViewById(R.id.text_view_1);
+		counterText = (TextView)findViewById(R.id.text_view_1);
 		
 		btn1.setOnClickListener(this);
 		
