@@ -5,5 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="default_counter">0</string>
     <string name="button_text">Click to increment</string>
+    <string name="menu_add_counter">Add Counter</string>
+    <string name="menu_reset">Reset</string>
 
 </resources>

@@ -2,10 +2,14 @@ package com.example.multiclicker;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 	
@@ -54,5 +58,35 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onSaveInstanceState(savedInstanceState);
 		savedInstanceState.putInt("counter", counter);
 	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main, menu);
+        return true;
+    }
 
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+         
+        switch (item.getItemId())
+        {
+ 
+        case R.id.menu_add:
+            Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
+            return true;
+ 
+        case R.id.menu_reset:
+            Toast.makeText(MainActivity.this, "All Counters Reset", Toast.LENGTH_SHORT).show();
+            counter = 0;
+            counterText.setText(Integer.toString(counter));
+            return true;
+ 
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }    
 }
