@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/button_text"
         android:layout_marginRight="18dp"
-        android:text="@string/default_counter"
         android:layout_toLeftOf="@+id/button_text" />
+    	 <!--android:text="@string/default_counter"-->
 
 </RelativeLayout>

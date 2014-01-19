@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
 	
-	int counter = 0;
+	static int counter = 0;
 	Button btn1;
 	TextView counterText;
 	
@@ -21,8 +21,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_main);
 		btn1 = (Button)findViewById(R.id.button_text);
 		counterText = (TextView)findViewById(R.id.text_view_1);
-		
 		btn1.setOnClickListener(this);
+		if (savedInstanceState == null) {
+			counterText.setText(Integer.toString(counter));
+		}
+		else {
+			int counter = savedInstanceState.getInt("counter");
+			counterText.setText(Integer.toString(counter));
+		}
 		
 	}
 
@@ -39,6 +45,12 @@ public class MainActivity extends Activity implements OnClickListener {
 			counter++;
 			counterText.setText(Integer.toString(counter));
 		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putInt("counter", counter);
 	}
 
 }
