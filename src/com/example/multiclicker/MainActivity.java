@@ -84,6 +84,10 @@ public class MainActivity extends Activity implements OnClickListener {
             counter = 0;
             counterText.setText(Integer.toString(counter));
             return true;
+           
+        case R.id.menu_log:
+            Toast.makeText(MainActivity.this, "Log Access Requested", Toast.LENGTH_SHORT).show();
+            return true;
  
         default:
             return super.onOptionsItemSelected(item);
