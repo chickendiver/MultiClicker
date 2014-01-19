@@ -31,6 +31,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		
 	}
+	
+	// Jan. 19th : http://stackoverflow.com/questions/151777/saving-activity-state-in-android
 
 	/*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
