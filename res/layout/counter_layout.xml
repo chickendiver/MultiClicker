@@ -25,6 +25,5 @@
         android:textSize="38sp"
         android:gravity="center"
         android:layout_toLeftOf="@+id/button_text" />
-    	 <!--android:text="@string/default_counter"-->
-
+    
 </RelativeLayout>

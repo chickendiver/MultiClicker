@@ -13,11 +13,12 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 	
+	// As a basic starting point, I accessed this resource on Jan. 17th:
+	// http://simpledeveloper.com/how-to-build-simple-counter-android-app/
+	
 	static int counter = 0;
 	Button btn1;
 	TextView counterText;
-	
-	//Jan. 17th : http://simpledeveloper.com/how-to-build-simple-counter-android-app/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +37,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 	}
 	
-	// Jan. 19th : http://stackoverflow.com/questions/151777/saving-activity-state-in-android
-
-	/*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}*/
-	
+	// The following handles what happens when a button is clicked
 	@Override
 	public void onClick(View v) {
 		if (v == btn1){ 
@@ -53,12 +46,17 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 	
+	// The following handles how variables are saved
+	// For help implementing this, I accessed the following resource on Jan. 19th
+	// http://stackoverflow.com/questions/151777/saving-activity-state-in-android
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 		savedInstanceState.putInt("counter", counter);
 	}
 	
+	// The following takes care of inflating the menu when pressed
+	// Resources are stored in res/menu/main.xml
 	@Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -67,7 +65,7 @@ public class MainActivity extends Activity implements OnClickListener {
         return true;
     }
 
-	
+	// The following takes care of what to do with menu items
 	@Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
