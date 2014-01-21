@@ -1,14 +1,28 @@
 package com.example.multiclicker;
 
+import android.content.Context;
+import android.widget.Button;
+import android.widget.Toast;
+
 public class Counter {
 	
 	protected String counterName;
     protected int counterValue;
- 
+    Button button;
+    Context context;
+    
     // Constructor
-    public Counter(String counterName, int counterValue) {
+    public Counter(Context context, String counterName, int counterValue) {
         this.counterName = counterName;
         this.counterValue= counterValue;
+        this.context = context;
+    }
+    
+    //Default constructor
+    public Counter(Context context) {
+    	this.counterName = "Counter";
+    	this.counterValue = 0;
+    	this.context = context;
     }
     
     public String getCounterName() {
@@ -25,6 +39,11 @@ public class Counter {
 
 	public void setCounterValue(int counterValue) {
 		this.counterValue = counterValue;
+	}
+	
+	public void resetCounter() {
+		this.counterValue = 0;
+		Toast.makeText(context, "Counter '" + counterName + "' Reset", Toast.LENGTH_SHORT).show();
 	}
 
 }
