@@ -43,7 +43,7 @@ public class CounterAdapter extends BaseAdapter implements OnClickListener{
 		Counter counterInstance = counterList.get(pos);
 		
 		// Inflate list view layout if null (copied exactly)
-		if(convertView == null){
+		if(convertView == null) {
 			LayoutInflater inflater = LayoutInflater.from(context);
 			convertView = inflater.inflate(R.layout.counter_layout, null);
 		}
@@ -55,10 +55,12 @@ public class CounterAdapter extends BaseAdapter implements OnClickListener{
 		
 		// set counter's textView
 		TextView counterCount = (TextView)convertView.findViewById(R.id.text_view_1);
-		counterCount.setText(counterInstance.getCounterValue());
+		counterCount.setText(Integer.toString(counterInstance.getCounterValue()));
+		
 		
 		return convertView;
 	}
+	
 	@Override
 	public void onClick(View v) {
 		//TODO Figure out if this is the right place for button clicks

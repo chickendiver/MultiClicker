@@ -7,7 +7,7 @@ import android.widget.Toast;
 public class Counter {
 	
 	protected String counterName;
-    protected int counterValue;
+    int counterValue;
     Button button;
     Context context;
     

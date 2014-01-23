@@ -1,42 +1,57 @@
 package com.example.multiclicker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
+//import android.view.View;
+//import android.view.View.OnClickListener;
+//import android.widget.Button;
+import android.widget.ListView;
+//import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity { //implements OnClickListener {
 	
 	// As a basic starting point, I accessed this resource on Jan. 17th:
 	// http://simpledeveloper.com/how-to-build-simple-counter-android-app/
 	
-	static int counter = 0;
-	Button btn1;
-	TextView counterText;
+	//static int counter = 0;
+	//protected Button btn1;
+	//protected TextView counterText;
+	protected ListView counterListView; 
+	protected List<Counter> counterList = new ArrayList<Counter>();
+	protected CounterAdapter adapter = new CounterAdapter (this, counterList);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.mainlistview);
+		
+		/*
 		btn1 = (Button)findViewById(R.id.button_text);
 		counterText = (TextView)findViewById(R.id.text_view_1);
-		btn1.setOnClickListener(this);
-		if (savedInstanceState == null) {
-			counterText.setText(Integer.toString(counter));
-		}
-		else {
-			int counter = savedInstanceState.getInt("counter");
-			counterText.setText(Integer.toString(counter));
-		}
+		btn1.setOnClickListener(this);*/
 		
+		counterListView = (ListView) findViewById(R.id.listmain);
+		
+		counterList.add(new Counter(this));
+		
+		counterListView.setAdapter(adapter);
+		/*
+		// Not sure if needed...
+		if (savedInstanceState != null) {
+			counter = savedInstanceState.getInt("counter");
+		}
+		counterText.setText(Integer.toString(counter));
+		*/
 	}
 	
+	/*
 	// The following handles what happens when a button is clicked
 	@Override
 	public void onClick(View v) {
@@ -45,6 +60,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			counterText.setText(Integer.toString(counter));
 		}
 	}
+	*/
 	
 	// The following handles how variables are saved
 	// For help implementing this, I accessed the following resource on Jan. 19th
@@ -52,7 +68,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
-		savedInstanceState.putInt("counter", counter);
+		//savedInstanceState.putInt("counter", counter);
 	}
 	
 	// The following takes care of inflating the menu when pressed
@@ -74,13 +90,15 @@ public class MainActivity extends Activity implements OnClickListener {
         {
  
         case R.id.menu_add:
+        	counterList.add(new Counter(this));
+        	adapter.notifyDataSetChanged ();
             Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
             return true;
  
         case R.id.menu_reset:
             Toast.makeText(MainActivity.this, "All Counters Reset", Toast.LENGTH_SHORT).show();
-            counter = 0;
-            counterText.setText(Integer.toString(counter));
+           // counter = 0;
+           // counterText.setText(Integer.toString(counter));
             return true;
            
         case R.id.menu_log:
