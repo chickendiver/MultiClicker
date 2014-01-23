@@ -1,0 +1,4 @@
+GSON --> Turns objects into JSON (Objects <--> JSON)
+						files/strings/etc.
+
+
