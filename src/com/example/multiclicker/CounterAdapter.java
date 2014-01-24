@@ -5,7 +5,7 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+//import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 // Based largely on article by Pete Houston, accessed on Jan. 21st at:
 // http://xjaphx.wordpress.com/2011/06/11/create-a-simple-phone-book/
-public class CounterAdapter extends BaseAdapter implements OnClickListener{
+public class CounterAdapter extends BaseAdapter {
 	private Context context;
 	private List<Counter> counterList;
 	
@@ -49,8 +49,17 @@ public class CounterAdapter extends BaseAdapter implements OnClickListener{
 		}
 		
 		// set counter's button
+		// MAKE THIS ATTACHED TO COUNTER CLASS CONSTRUCTOR, NOT HERE
 		Button counterbutton = (Button) convertView.findViewById(R.id.button_text);
-		counterbutton.setOnClickListener(this);
+		counterbutton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v){
+				SetResult(RESULT_OK);
+				
+				//TODO add code
+			}
+		});
 
 		
 		// set counter's textView
@@ -61,8 +70,15 @@ public class CounterAdapter extends BaseAdapter implements OnClickListener{
 		return convertView;
 	}
 	
-	@Override
+	/*@Override
 	public void onClick(View v) {
 		//TODO Figure out if this is the right place for button clicks
+		// AlertDialog example to allow user to use custom name accessed on Jan 23:
+		// http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog
+		
+	}*/
+	
+	public void myClickHandler(View view){
+		
 	}
 }

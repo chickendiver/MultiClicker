@@ -67,11 +67,11 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	// The following handles how variables are saved
 	// For help implementing this, I accessed the following resource on Jan. 19th
 	// http://stackoverflow.com/questions/151777/saving-activity-state-in-android
-	@Override
+	/*@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 		//savedInstanceState.putInt("counter", counter);
-	}
+	}*/
 	
 	// The following takes care of inflating the menu when pressed
 	// Resources are stored in res/menu/main.xml
