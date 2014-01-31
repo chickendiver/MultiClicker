@@ -32,7 +32,27 @@ public class MainActivity extends Activity { //implements OnClickListener {
 
 		counterListView = (ListView) findViewById(R.id.listmain);
 		
-		counterList.add(new Counter(this));
+		final EditText addNameInput = new EditText(MainActivity.this);
+    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
+		addCounterADB.setCancelable(false);
+		addCounterADB.setMessage("Add a name for the first counter");
+		addCounterADB.setView(addNameInput);
+		addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
+    		public void onClick(DialogInterface dialog, int id) {
+    			String name = addNameInput.getText().toString();
+    			// TODO Check if this name already exists in the list of counters and if the name is blank.
+            	counterList.add(new Counter(MainActivity.this, name, 0));
+            	adapter.notifyDataSetChanged ();
+                Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
+    		}
+    	});
+		addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+    		public void onClick(DialogInterface dialog, int id) {
+    			dialog.cancel();
+    		}
+    	});
+		AlertDialog deleteDialog = addCounterADB.create();
+		deleteDialog.show();
 		
 		counterListView.setAdapter(adapter);
 		
@@ -112,7 +132,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
 				}
 			});
 			adapter.notifyDataSetChanged();
-        	Toast.makeText(MainActivity.this, "Instantiated a New World Order", Toast.LENGTH_SHORT).show();
+        	Toast.makeText(MainActivity.this, "Instituted a New World Order", Toast.LENGTH_SHORT).show();
  
         default:
             return super.onOptionsItemSelected(item);
