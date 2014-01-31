@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 //import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 //import android.view.View;
 //import android.view.View.OnClickListener;
 //import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 //import android.widget.TextView;
 import android.widget.Toast;
@@ -93,9 +96,26 @@ public class MainActivity extends Activity { //implements OnClickListener {
         {
  
         case R.id.menu_add:
-        	counterList.add(new Counter(this));
-        	adapter.notifyDataSetChanged ();
-            Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
+        	final EditText addNameInput = new EditText(MainActivity.this);
+        	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
+			addCounterADB.setCancelable(false);
+			addCounterADB.setMessage("Add a name for this counter");
+			addCounterADB.setView(addNameInput);
+			addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
+        		public void onClick(DialogInterface dialog, int id) {
+        			String name = addNameInput.getText().toString();
+                	counterList.add(new Counter(MainActivity.this, name, 0));
+                	adapter.notifyDataSetChanged ();
+                    Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
+        		}
+        	});
+			addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+        		public void onClick(DialogInterface dialog, int id) {
+        			dialog.cancel();
+        		}
+        	});
+			AlertDialog deleteDialog = addCounterADB.create();
+			deleteDialog.show();
             return true;
  
         case R.id.menu_reset:

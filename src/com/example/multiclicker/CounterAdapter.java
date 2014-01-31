@@ -106,7 +106,7 @@ public class CounterAdapter extends BaseAdapter {
 	        			final EditText renameInput = new EditText(context);
 	        			renameADB.setView(renameInput);
 	        			renameADB.setCancelable(true);
-	        			renameADB.setNegativeButton("Submit", new DialogInterface.OnClickListener(){
+	        			renameADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
 	        				public void onClick(DialogInterface dialog, int id){
 	        					String newName = renameInput.getText().toString();
 	        					counterInstance.setCounterName(newName);
@@ -114,7 +114,7 @@ public class CounterAdapter extends BaseAdapter {
 	        					Toast.makeText(context, "Counter Renamed", Toast.LENGTH_SHORT).show();
 	        				}
 	        			});
-	        			renameADB.setPositiveButton("Cancel", new DialogInterface.OnClickListener(){
+	        			renameADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
 	        				public void onClick(DialogInterface dialog, int id){
 	        					dialog.cancel();
 	        				}
