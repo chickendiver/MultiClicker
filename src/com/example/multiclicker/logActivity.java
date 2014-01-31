@@ -30,7 +30,8 @@ public class logActivity extends Activity {
 				return (int) i2 - i1;
 			}
 		});
-		for (int i = 0, counter = 0, previous = -1; i < calendarYears.size();i++){
+		int counter = 0;
+		for (int i = 0, previous = -1; i < calendarYears.size();i++){
 			if (previous == -1){
 				//print out the current day
 				counter++;
@@ -60,7 +61,8 @@ public class logActivity extends Activity {
 				return (int) i2 - i1;
 			}
 		});
-		for (int i = 0, counter = 0, previous = -1; i < calendarWeeks.size();i++){
+		int counter = 0;
+		for (int i = 0, previous = -1; i < calendarWeeks.size();i++){
 			if (previous == -1){
 				//print out the current day
 				counter++;
@@ -90,8 +92,8 @@ public class logActivity extends Activity {
 				return (int) i2 - i1;
 			}
 		});
-		
-		for (int i = 0, counter = 0, previous = -1; i < calendarDays.size();i++){
+		int counter = 0;
+		for (int i = 0, previous = -1; i < calendarDays.size();i++){
 			if (previous == -1){
 				//print out the current day
 				counter++;
@@ -113,4 +115,38 @@ public class logActivity extends Activity {
 			
 		}
 	}
+	
+	private void displayHourlyLog(){
+		ArrayList<Integer> calendarHours = new ArrayList<Integer>();
+		calendarHours = counterInstance.getCalendarDays();
+		Collections.sort(calendarHours, new Comparator<Integer>(){
+			@Override public int compare(Integer i1, Integer i2){
+				return (int) i2 - i1;
+			}
+		});
+		int counter = 0;
+		for (int i = 0, previous = -1; i < calendarHours.size();i++){
+			if (previous == -1){
+				//print out the current day
+				counter++;
+				continue;
+			}
+			
+			if (calendarHours.get(i) == previous){
+				counter++;
+				previous = calendarHours.get(i);
+			}
+			else
+			{
+				//print counter number
+				counter = 0;
+				//print new day
+				counter++;
+				previous = calendarHours.get(i);
+			}
+			
+		}
+	}
+	
+	// ADD OPTIONS MENU FOR CHANGING BETWEEN DIFFERENT LOG TYPES
 }

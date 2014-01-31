@@ -22,6 +22,7 @@ public class Counter implements Serializable{
     protected ArrayList<Integer> calendarYearList = new ArrayList<Integer>();
     protected ArrayList<Integer> calendarWeekList = new ArrayList<Integer>(); 
     protected ArrayList<Integer> calendarDayList = new ArrayList<Integer>();
+    protected ArrayList<Integer> calendarHourList = new ArrayList<Integer>();
     // Constructor
     public Counter(Context context, String counterName, int counterValue) {
         this.counterName = counterName;
@@ -82,6 +83,11 @@ public class Counter implements Serializable{
 		calendarYearList.add(calendarDay);
 	}
 	
+	public void addCalendarHour(){
+		int calendarHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+		calendarHourList.add(calendarHour);
+	}
+	
 	public ArrayList<Integer> getCalendarYears(){
 		return calendarYearList;
 	}
@@ -92,5 +98,9 @@ public class Counter implements Serializable{
 	
 	public ArrayList<Integer> getCalendarDays(){
 		return calendarDayList;
+	}
+	
+	public ArrayList<Integer> getCalendarHours(){
+		return calendarHourList;
 	}
 }
