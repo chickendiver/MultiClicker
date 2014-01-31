@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 //import android.widget.Button;
 //import android.widget.TextView;
+import android.widget.Toast;
 
 // Based largely on article by Pete Houston, accessed on Jan. 21st at:
 // http://xjaphx.wordpress.com/2011/06/11/create-a-simple-phone-book/
@@ -65,7 +66,6 @@ public class CounterAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View v){
-				//SetResult(RESULT_OK);
 				counterInstance.incrementCounter();
 				counterInstance.counterCount.setText(Integer.toString(counterInstance.getCounterValue()));
 				notifyDataSetChanged();
@@ -74,49 +74,65 @@ public class CounterAdapter extends BaseAdapter {
 		counterInstance.button.setOnLongClickListener(new View.OnLongClickListener() { 
 	        @Override
 	        public boolean onLongClick(View v) {
-	        	AlertDialog.Builder adb = new AlertDialog.Builder(context);
-	        	adb.setCancelable(true);
-	        	adb.setPositiveButton("Delete Counter", new DialogInterface.OnClickListener(){
+	        	AlertDialog.Builder counterOptionsADB = new AlertDialog.Builder(context);
+	        	counterOptionsADB.setCancelable(true);
+	        	//This button opens a dialog to warn the user before proceeding to erase all counter data
+	        	counterOptionsADB.setPositiveButton("Delete Counter", new DialogInterface.OnClickListener(){
 	        		public void onClick(DialogInterface dialog, int id){
-	        			// TODO don't forget to add an "are you sure" dialog.
-	        			counterList.remove(pos);
-	        			notifyDataSetChanged();
+	        			AlertDialog.Builder deleteConfirmationADB = new AlertDialog.Builder(context);
+	        			deleteConfirmationADB.setCancelable(true);
+	        			deleteConfirmationADB.setMessage("Are you sure you want to delete this counter?");
+	        			deleteConfirmationADB.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+	    	        		public void onClick(DialogInterface dialog, int id) {
+	    	        			counterList.remove(pos);
+	    	        			notifyDataSetChanged();
+	    	        			Toast.makeText(context, "Counter Removed", Toast.LENGTH_SHORT).show();
+	    	        		}
+	    	        	});
+	        			deleteConfirmationADB.setNegativeButton("No", new DialogInterface.OnClickListener(){
+	    	        		public void onClick(DialogInterface dialog, int id) {
+	    	        			dialog.cancel();
+	    	        		}
+	    	        	});
+	        			AlertDialog deleteDialog = deleteConfirmationADB.create();
+	        			deleteDialog.show();
 	        		}
 	        	});
-	        	
-	        	adb.setNeutralButton("Rename", new DialogInterface.OnClickListener(){
+	        	//End warning dialog
+	        	counterOptionsADB.setNeutralButton("Rename", new DialogInterface.OnClickListener(){
+	        		// Opens a new dialog, asking for an input from the user
 	        		public void onClick(DialogInterface dialog, int id) {
-	        			AlertDialog.Builder adb2 = new AlertDialog.Builder(context);
+	        			AlertDialog.Builder renameADB = new AlertDialog.Builder(context);
 	        			final EditText renameInput = new EditText(context);
-	        			adb2.setView(renameInput);
-	        			adb2.setCancelable(true);
-	        			
-	        			adb2.setNegativeButton("Submit", new DialogInterface.OnClickListener(){
+	        			renameADB.setView(renameInput);
+	        			renameADB.setCancelable(true);
+	        			renameADB.setNegativeButton("Submit", new DialogInterface.OnClickListener(){
 	        				public void onClick(DialogInterface dialog, int id){
 	        					String newName = renameInput.getText().toString();
 	        					counterInstance.setCounterName(newName);
 	        					notifyDataSetChanged();
+	        					Toast.makeText(context, "Counter Renamed", Toast.LENGTH_SHORT).show();
 	        				}
 	        			});
-	        			
-	        			adb2.setPositiveButton("Cancel", new DialogInterface.OnClickListener(){
+	        			renameADB.setPositiveButton("Cancel", new DialogInterface.OnClickListener(){
 	        				public void onClick(DialogInterface dialog, int id){
 	        					dialog.cancel();
 	        				}
 	        			});
-	        			AlertDialog aDialog2 = adb2.create();
-	        			aDialog2.show();
+	        			AlertDialog renameDialog = renameADB.create();
+	        			renameDialog.show();
 	        		}
 	        	});
-	        	
-	        	adb.setNegativeButton("Reset", new DialogInterface.OnClickListener(){
+	        	// End rename dialog
+	        	counterOptionsADB.setNegativeButton("Reset", new DialogInterface.OnClickListener(){
 	        		public void onClick(DialogInterface dialog, int id) {
 	        			counterInstance.setCounterValue(0);
 	        			notifyDataSetChanged();
+	        			Toast.makeText(context, "Counter Reset", Toast.LENGTH_SHORT).show();
 	        		}
 	        	});
 	        	
-	        	AlertDialog aDialog = adb.create();
+	        	AlertDialog aDialog = counterOptionsADB.create();
 	        	aDialog.show();
 	        	
 	            return true;
