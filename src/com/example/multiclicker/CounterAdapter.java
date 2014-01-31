@@ -1,5 +1,7 @@
 package com.example.multiclicker;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -7,12 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
-//import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-//import android.widget.Button;
-//import android.widget.TextView;
 import android.widget.Toast;
 
 // Based largely on article by Pete Houston, accessed on Jan. 21st at:
@@ -43,12 +42,10 @@ public class CounterAdapter extends BaseAdapter {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// Use the proper counter
 		final int pos = position;
-		final Counter counterInstance = counterList.get(pos); // Not sure if final is appropriate here.
-		//Suggestion taken from: http://stackoverflow.com/questions/5997953/cannot-refer-to-a-non-final-variable-i-inside-an-inner-class-defined-in-a-differ
+		final Counter counterInstance = counterList.get(pos);	//Suggestion taken from: http://stackoverflow.com/questions/5997953/cannot-refer-to-a-non-final-variable-i-inside-an-inner-class-defined-in-a-differ
 		
-		// Inflate list view layout if null (copied exactly)
+		// Inflate list view layout if null
 				if(convertView == null) {
 					LayoutInflater inflater = LayoutInflater.from(context);
 					convertView = inflater.inflate(R.layout.counter_layout, null);
@@ -61,13 +58,21 @@ public class CounterAdapter extends BaseAdapter {
 				
 		// set counter's button
 		// MAKE THIS ATTACHED TO COUNTER CLASS CONSTRUCTOR, NOT HERE
-		//Button counterbutton = (Button) convertView.findViewById(R.id.button_text);
 		counterInstance.button.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v){
 				counterInstance.incrementCounter();
 				counterInstance.counterCount.setText(Integer.toString(counterInstance.getCounterValue()));
+				
+				// To order the counters as they're incremented, utilized Collections with custom Comparator, as suggested here:
+				// http://stackoverflow.com/questions/2535124/how-to-sort-an-arraylist-of-objects-by-a-property
+				// TODO Add an "order" button so that you can do this on demand, instead of the current messy implementation
+				Collections.sort(counterList, new Comparator<Counter>(){
+					@Override public int compare(Counter c1, Counter c2){
+						return c1.getCounterValue() - c2.getCounterValue();
+					}
+				});
 				notifyDataSetChanged();
 			}
 		});
@@ -109,6 +114,7 @@ public class CounterAdapter extends BaseAdapter {
 	        			renameADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
 	        				public void onClick(DialogInterface dialog, int id){
 	        					String newName = renameInput.getText().toString();
+	        					// TODO Check if this name already exists in the list of counters and if the name is blank.
 	        					counterInstance.setCounterName(newName);
 	        					notifyDataSetChanged();
 	        					Toast.makeText(context, "Counter Renamed", Toast.LENGTH_SHORT).show();
