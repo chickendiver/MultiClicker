@@ -1,6 +1,7 @@
 package com.example.multiclicker;
 
 //import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
@@ -13,74 +14,78 @@ import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class JSONFiler {
 
-	String storageFile = "JSONfile.txt";
+	String storageFile = "JSONfile.sav";
 	Context context;
 	Type listofCounters = new TypeToken<List<Counter>>() {}.getType();
 	Gson gson = new Gson();
 	
-	public void JSONFiler(){
-		//TODO STUB
-	}
-	
+
 	public void writeObjectsToFile(Context context, List<Counter> counterList){
 		this.context = context;
+		SharedPreferences prefs = context.getSharedPreferences("jsonObjects", Context.MODE_PRIVATE);
 		
+		Type type = new TypeToken<ArrayList<Counter>>(){}.getType();
+		String value = gson.toJson(counterList, type);
+		
+		Editor e = prefs.edit();
+		e.putString("list", value);
+		e.commit();
+		
+		////
+		/*
 		try{
-			Writer osWriter = new OutputStreamWriter(new FileOutputStream(storageFile));
-			List<Counter> outputCounterList = Collections.synchronizedList(new ArrayList<Counter>());
-			for (int i=0; i<counterList.size(); i++){
-				outputCounterList.add(counterList.get(i));
-			}
+			FileOutputStream fos = context.openFileOutput(storageFile, Context.MODE_PRIVATE);
+			Writer osWriter = new OutputStreamWriter(fos);
+			//List<Counter> outputCounterList = Collections.synchronizedList(new ArrayList<Counter>());
+			Type type = new TypeToken<ArrayList<Counter>>(){}.getType();
 			
-			gson.toJson(outputCounterList, osWriter);
+			osWriter.write(gson.toJson(counterList, type));
 			osWriter.close();
+			fos.close();
 		}
 		catch (Exception fileException) {
 			fileException.printStackTrace();
 		}
-		
+		*/
 	}
 	
 	public List<Counter> readObjectsFromFile(Context context){
 		this.context = context;
-		//List<Counter> counters = new ArrayList<Counter>();
 		List<Counter> inputCounterList = new ArrayList<Counter>();
-		try{
-			FileInputStream fiStream = new FileInputStream((storageFile));
-			Reader isReader = new InputStreamReader(fiStream);
-			inputCounterList = Collections.synchronizedList((List<Counter>) gson.fromJson(isReader, listofCounters));
-			isReader.close();
-		}
-		catch (Exception fileException){
-			fileException.printStackTrace();
-		}
-
-		//ArrayList<Counter> counterList = new ArrayList<Counter>();
-		/*try{
-			FileInputStream fis = context.openFileInput(storageFile);
-			InputStreamReader isReader = new InputStreamReader(fis);
-			BufferedReader buffRead = new BufferedReader(isReader);
-			StringBuilder sBuilder = new StringBuilder();
-			String line;
-			while ((line = buffRead.readLine()) != null){
-				sBuilder.append(line);
-			}
-			Gson gson = new Gson();
-			Type listType = new TypeToken<List<Counter>>(){}.getType();
-			counters = (List<Counter>) gson.fromJson(storageFile, listType);
-			fis.close();
-			
-		}
-		catch (Exception fileException){
-			fileException.printStackTrace();
-		}*/
+		Type type = new TypeToken<ArrayList<Counter>>(){}.getType();
 		
+		SharedPreferences prefs = context.getSharedPreferences("jsonObjects", Context.MODE_PRIVATE);
+		String value = prefs.getString("list", null);
+		GsonBuilder gsonb = new GsonBuilder();
+		Gson gson = gsonb.create();
+		inputCounterList = gson.fromJson(value, type);
+		
+		//
+		/*
+		File file = context.getFileStreamPath(storageFile);
+		if(file.exists()){
+			try{
+				FileInputStream fiStream = context.openFileInput(storageFile);
+				Reader isReader = new InputStreamReader(fiStream);
+				Type type = new TypeToken<ArrayList<Counter>>(){}.getType();
+				inputCounterList = gson.fromJson(isReader, type);
+				isReader.close();
+				fiStream.close();
+			}
+			catch (Exception fileException){
+				fileException.printStackTrace();
+			}
+		}*/
 		return inputCounterList;
+		
 	}
 }

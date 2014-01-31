@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,7 @@ public class CounterAdapter extends BaseAdapter {
 				counterInstance.addCalendarDay();
 				notifyDataSetChanged();
 				
-				jsonFiler.writeObjectsToFile(context, counterList);
+				//jsonFiler.writeObjectsToFile(context, counterList);
 				//TODO Check if this actually writes to a file...
 			}
 		});
@@ -126,11 +127,9 @@ public class CounterAdapter extends BaseAdapter {
 	        		}
 	        	});
 	        	// End rename dialog
-	        	counterOptionsADB.setNegativeButton("Reset", new DialogInterface.OnClickListener(){
+	        	counterOptionsADB.setNegativeButton("Access Data Log", new DialogInterface.OnClickListener(){
 	        		public void onClick(DialogInterface dialog, int id) {
-	        			counterInstance.setCounterValue(0);
-	        			notifyDataSetChanged();
-	        			Toast.makeText(context, "Counter Reset", Toast.LENGTH_SHORT).show();
+	        			Toast.makeText(context, "Log Access Requested", Toast.LENGTH_SHORT).show();
 	        		}
 	        	});
 	        	

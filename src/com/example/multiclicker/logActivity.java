@@ -4,23 +4,42 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class logActivity extends Activity {
 	
 	protected ArrayList<Counter> counterLogList = new ArrayList<Counter>();
 	protected Counter counterInstance = new Counter(this);
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		displayDailyLog();
-	}
+	protected TextView data;
+	protected String dataString = ""; 
+	
+	@SuppressLint("NewApi")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        setContentView(R.layout.activitylog);
+        Intent intent = getIntent();
+
+        // Make sure we're running on Honeycomb or higher to use ActionBar APIs
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            // Show the Up button in the action bar.
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        displayDailyLog();
+    }
+
 	
 	private void displayYearlyLog(){
 		ArrayList<Integer> calendarYears = new ArrayList<Integer>();
@@ -33,7 +52,7 @@ public class logActivity extends Activity {
 		int counter = 0;
 		for (int i = 0, previous = -1; i < calendarYears.size();i++){
 			if (previous == -1){
-				//print out the current day
+				//dataString += ""
 				counter++;
 				continue;
 			}
@@ -95,7 +114,7 @@ public class logActivity extends Activity {
 		int counter = 0;
 		for (int i = 0, previous = -1; i < calendarDays.size();i++){
 			if (previous == -1){
-				//print out the current day
+				dataString += "Log for Day" + calendarDays.get(i) + ": \n";
 				counter++;
 				continue;
 			}
@@ -106,9 +125,9 @@ public class logActivity extends Activity {
 			}
 			else
 			{
-				//print counter number
+				dataString += Integer.toString(counter) + "\n";
 				counter = 0;
-				//print new day
+				dataString += "Log for Day" + calendarDays.get(i) + ": \n";
 				counter++;
 				previous = calendarDays.get(i);
 			}

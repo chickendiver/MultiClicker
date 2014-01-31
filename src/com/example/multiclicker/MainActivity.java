@@ -8,6 +8,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,10 +22,12 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	// As a basic starting point, I accessed this resource on Jan. 17th:
 	// http://simpledeveloper.com/how-to-build-simple-counter-android-app/
 
+
 	protected ListView counterListView; 
 	protected List<Counter> counterList = new ArrayList<Counter>();
 	protected CounterAdapter adapter = new CounterAdapter (this, counterList);
 	protected JSONFiler jsonFiler = new JSONFiler();
+	protected static int firstTime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,34 @@ public class MainActivity extends Activity { //implements OnClickListener {
 		counterListView.setAdapter(adapter);
 		
 		if (savedInstanceState == null){
-			// Should happen if the counterList is empty
+			firstTime = 0;
+			final EditText addNameInput = new EditText(MainActivity.this);
+	    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
+			addCounterADB.setCancelable(false);
+			addCounterADB.setMessage("Add a name for the first counter");
+			addCounterADB.setView(addNameInput);
+			addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
+	    		public void onClick(DialogInterface dialog, int id) {
+	    			String name = addNameInput.getText().toString();
+	    			// TODO Check if this name already exists in the list of counters and if the name is blank.
+	            	counterList.add(new Counter(MainActivity.this, name, 0));
+	            	adapter.notifyDataSetChanged ();
+	                Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
+	    		}
+	    	});
+			addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+	    		public void onClick(DialogInterface dialog, int id) {
+	    			dialog.cancel();
+	    		}
+	    	});
+			AlertDialog deleteDialog = addCounterADB.create();
+			deleteDialog.show();
+			//jsonFiler.writeObjectsToFile(this, counterList);
+		}
+		else{
+			firstTime = 1;
+		}
+			/*
 			final EditText addNameInput = new EditText(MainActivity.this);
 	    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
 			addCounterADB.setCancelable(false);
@@ -58,10 +88,10 @@ public class MainActivity extends Activity { //implements OnClickListener {
 			AlertDialog deleteDialog = addCounterADB.create();
 			deleteDialog.show();
 			jsonFiler.writeObjectsToFile(this, counterList);
-		}
-		else
+		}*/
+		/*else
 		{
-			counterList = jsonFiler.readObjectsFromFile(this);
+			//counterList = jsonFiler.readObjectsFromFile(this);
 		
 			if (counterList.size() == 0){
 				// Should happen if the counterList is empty
@@ -88,10 +118,60 @@ public class MainActivity extends Activity { //implements OnClickListener {
 				deleteDialog.show();
 				jsonFiler.writeObjectsToFile(this, counterList);
 			}
-		}
+		}*/
 		
-		
+
 	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+			
+		if (firstTime == 1){
+			//counterList = jsonFiler.readObjectsFromFile(this);
+			
+			if (counterList.size() == 0){
+				// Should happen if the counterList is empty
+				final EditText addNameInput = new EditText(MainActivity.this);
+		    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
+				addCounterADB.setCancelable(false);
+				addCounterADB.setMessage("Add a name for the first counter");
+				addCounterADB.setView(addNameInput);
+				addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
+		    		public void onClick(DialogInterface dialog, int id) {
+		    			String name = addNameInput.getText().toString();
+		    			// TODO Check if this name already exists in the list of counters and if the name is blank.
+		            	counterList.add(new Counter(MainActivity.this, name, 0));
+		            	adapter.notifyDataSetChanged ();
+		                Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
+		    		}
+		    	});
+				addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+		    		public void onClick(DialogInterface dialog, int id) {
+		    			dialog.cancel();
+		    		}
+		    	});
+				AlertDialog deleteDialog = addCounterADB.create();
+				deleteDialog.show();
+				//jsonFiler.writeObjectsToFile(this, counterList);
+			}
+			else
+			{
+				adapter.notifyDataSetChanged ();
+			}
+		}
+	
+	}
+	
+	public void logActivity(){
+		Intent intent = new Intent(this, logActivity.class);
+	    //EditText editText = (EditText) findViewById(R.id.edit_message);
+	    //String message = editText.getText().toString();
+	    //intent.putExtra(EXTRA_MESSAGE, message);
+	    startActivity(intent);
+
+	}
+		
 	
 	// The following handles how variables are saved
 	// For help implementing this, I accessed the following resource on Jan. 19th
@@ -111,6 +191,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
         menuInflater.inflate(R.menu.main, menu);
         return true;
     }
+	
 
 	// The following takes care of what to do with menu items
 	@Override
@@ -142,6 +223,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
         	});
 			AlertDialog deleteDialog = addCounterADB.create();
 			deleteDialog.show();
+			//jsonFiler.writeObjectsToFile(this, counterList);
             return true;
  
         case R.id.menu_reset:
@@ -150,23 +232,25 @@ public class MainActivity extends Activity { //implements OnClickListener {
             	counterList.get(i).setCounterValue(0);
             }
             adapter.notifyDataSetChanged();
+            //jsonFiler.writeObjectsToFile(this, counterList);
             Toast.makeText(MainActivity.this, "All Counters Reset", Toast.LENGTH_SHORT).show();
             return true;
            
         case R.id.menu_log:
             Toast.makeText(MainActivity.this, "Log Access Requested", Toast.LENGTH_SHORT).show();
+            logActivity();
             return true;
             
         case R.id.menu_order:
         	// To order the counters as they're incremented, utilized Collections with custom Comparator, as suggested here:
 			// http://stackoverflow.com/questions/2535124/how-to-sort-an-arraylist-of-objects-by-a-property
-			// TODO Add an "order" button so that you can do this on demand, instead of the current messy implementation
 			Collections.sort(counterList, new Comparator<Counter>(){
 				@Override public int compare(Counter c1, Counter c2){
 					return c2.getCounterValue() - c1.getCounterValue();
 				}
 			});
 			adapter.notifyDataSetChanged();
+			//jsonFiler.writeObjectsToFile(this, counterList);
         	Toast.makeText(MainActivity.this, "Instituted a New World Order", Toast.LENGTH_SHORT).show();
  
         default:
