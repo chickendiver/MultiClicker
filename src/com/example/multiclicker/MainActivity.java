@@ -32,7 +32,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	protected ListView counterListView; 
 	protected List<Counter> counterList = new ArrayList<Counter>();
 	protected CounterAdapter adapter = new CounterAdapter (this, counterList);
-	protected JSONFiler jsonFiler = new JSONFiler();
+	protected DataStorage dataController = new DataStorage();
 	protected static int firstTime;
 
 	@Override
@@ -66,7 +66,6 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	    	});
 			AlertDialog deleteDialog = addCounterADB.create();
 			deleteDialog.show();
-			//jsonFiler.writeObjectsToFile(this, counterList);
 		}
 		else{
 			firstTime = 1;
@@ -80,7 +79,6 @@ public class MainActivity extends Activity { //implements OnClickListener {
 		super.onResume();
 			
 		if (firstTime == 1){
-			//counterList = jsonFiler.readObjectsFromFile(this);
 			
 			if (counterList.size() == 0){
 				// Should happen if the counterList is empty
@@ -105,7 +103,6 @@ public class MainActivity extends Activity { //implements OnClickListener {
 		    	});
 				AlertDialog deleteDialog = addCounterADB.create();
 				deleteDialog.show();
-				//jsonFiler.writeObjectsToFile(this, counterList);
 			}
 			else
 			{
@@ -163,7 +160,6 @@ public class MainActivity extends Activity { //implements OnClickListener {
         	});
 			AlertDialog deleteDialog = addCounterADB.create();
 			deleteDialog.show();
-			//jsonFiler.writeObjectsToFile(this, counterList);
             return true;
  
         case R.id.menu_reset:
@@ -172,7 +168,6 @@ public class MainActivity extends Activity { //implements OnClickListener {
             	counterList.get(i).setCounterValue(0);
             }
             adapter.notifyDataSetChanged();
-            //jsonFiler.writeObjectsToFile(this, counterList);
             Toast.makeText(MainActivity.this, "All Counters Reset", Toast.LENGTH_SHORT).show();
             return true;
            
@@ -191,7 +186,6 @@ public class MainActivity extends Activity { //implements OnClickListener {
 				}
 			});
 			adapter.notifyDataSetChanged();
-			//jsonFiler.writeObjectsToFile(this, counterList);
         	Toast.makeText(MainActivity.this, "Instituted a New World Order", Toast.LENGTH_SHORT).show();
  
         default:

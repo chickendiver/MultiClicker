@@ -21,9 +21,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-public class JSONFiler {
+public class DataStorage {
 
-	String storageFile = "JSONfile.sav";
+	String storageFile = "saveFile.sav";
 	Context context;
 	Type listofCounters = new TypeToken<List<Counter>>() {}.getType();
 	Gson gson = new Gson();
@@ -40,22 +40,7 @@ public class JSONFiler {
 		e.putString("list", value);
 		e.commit();
 		
-		////
-		/*
-		try{
-			FileOutputStream fos = context.openFileOutput(storageFile, Context.MODE_PRIVATE);
-			Writer osWriter = new OutputStreamWriter(fos);
-			//List<Counter> outputCounterList = Collections.synchronizedList(new ArrayList<Counter>());
-			Type type = new TypeToken<ArrayList<Counter>>(){}.getType();
-			
-			osWriter.write(gson.toJson(counterList, type));
-			osWriter.close();
-			fos.close();
-		}
-		catch (Exception fileException) {
-			fileException.printStackTrace();
-		}
-		*/
+
 	}
 	
 	public List<Counter> readObjectsFromFile(Context context){
@@ -69,22 +54,7 @@ public class JSONFiler {
 		Gson gson = gsonb.create();
 		inputCounterList = gson.fromJson(value, type);
 		
-		//
-		/*
-		File file = context.getFileStreamPath(storageFile);
-		if(file.exists()){
-			try{
-				FileInputStream fiStream = context.openFileInput(storageFile);
-				Reader isReader = new InputStreamReader(fiStream);
-				Type type = new TypeToken<ArrayList<Counter>>(){}.getType();
-				inputCounterList = gson.fromJson(isReader, type);
-				isReader.close();
-				fiStream.close();
-			}
-			catch (Exception fileException){
-				fileException.printStackTrace();
-			}
-		}*/
+
 		return inputCounterList;
 		
 	}

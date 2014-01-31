@@ -13,6 +13,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -171,5 +174,48 @@ public class logActivity extends Activity {
 		}
 	}
 	
-	// ADD OPTIONS MENU FOR CHANGING BETWEEN DIFFERENT LOG TYPES
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.logmenu, menu);
+        return true;
+    }
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+         
+        switch (item.getItemId())
+        {
+ 
+        case R.id.menu_yearly:
+        
+        		displayYearlyLog();
+                Toast.makeText(logActivity.this, "Log ordered by year", Toast.LENGTH_SHORT).show();
+            return true;
+ 
+        case R.id.menu_weekly:
+          
+        	displayWeeklyLog();
+            Toast.makeText(logActivity.this, "Log ordered by week", Toast.LENGTH_SHORT).show();
+            return true;
+           
+        case R.id.menu_daily:
+        	
+        	displayDailyLog();
+        	Toast.makeText(logActivity.this, "Log ordered by day", Toast.LENGTH_SHORT).show();
+            return true;
+            
+        case R.id.menu_hourly:
+        	
+        	displayHourlyLog();
+        	Toast.makeText(logActivity.this, "Log ordered by hour", Toast.LENGTH_SHORT).show();
+        	return true;
+ 
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+	
 }

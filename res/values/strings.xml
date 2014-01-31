@@ -10,5 +10,9 @@
     <string name="menu_get_log">Counter Log</string>
     <string name="rename_text_hint">New Counter Name</string>
     <string name="menu_order">Order Counters</string>
+    <string name="menu_yearly">Order by Year</string>
+    <string name="menu_weekly">Order by Week</string>
+    <string name="menu_daily">Order by Day</string>
+    <string name="menu_hourly">Order by Hour</string>
 
 </resources>

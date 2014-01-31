@@ -19,7 +19,6 @@ import android.widget.Toast;
 public class CounterAdapter extends BaseAdapter {
 	private Context context;
 	private List<Counter> counterList;
-	private JSONFiler jsonFiler = new JSONFiler();
 	public CounterAdapter(Context context, List<Counter> counterList) {
 		this.context = context;
 		this.counterList = counterList;
@@ -57,7 +56,6 @@ public class CounterAdapter extends BaseAdapter {
 		counterInstance.counterCount.setText(Integer.toString(counterInstance.getCounterValue()));
 				
 		// set counter's button
-		// MAKE THIS ATTACHED TO COUNTER CLASS CONSTRUCTOR, NOT HERE
 		counterInstance.button.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -69,8 +67,7 @@ public class CounterAdapter extends BaseAdapter {
 				counterInstance.addCalendarDay();
 				notifyDataSetChanged();
 				
-				//jsonFiler.writeObjectsToFile(context, counterList);
-				//TODO Check if this actually writes to a file...
+				//TODO Write to a file here...
 			}
 		});
 		counterInstance.button.setOnLongClickListener(new View.OnLongClickListener() { 
@@ -145,11 +142,4 @@ public class CounterAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
-	/*@Override
-	public void onClick(View v) {
-		//TODO Figure out if this is the right place for button clicks
-		// AlertDialog example to allow user to use custom name accessed on Jan 23:
-		// http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog
-		
-	}*/
 }
