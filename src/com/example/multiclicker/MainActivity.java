@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,9 +23,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	// As a basic starting point, I accessed this resource on Jan. 17th:
 	// http://simpledeveloper.com/how-to-build-simple-counter-android-app/
 	
-	/*Throughout this code, you will notice various commented-out implementations of jsonFiler().
-	 * This is because there are errors in how I implemented file I/O using JSON, which are currently
-	 * unresolved.*/
+	/* This code does not implement any form of data persistence. This is currently being worked on.*/
 	
 	
 
@@ -34,42 +33,16 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	protected CounterAdapter adapter = new CounterAdapter (this, counterList);
 	protected DataStorage dataController = new DataStorage();
 	protected static int firstTime;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainlistview);
+		
 
 		counterListView = (ListView) findViewById(R.id.listmain);
 		counterListView.setAdapter(adapter);
-		
-		if (savedInstanceState == null){
-			firstTime = 0;
-			final EditText addNameInput = new EditText(MainActivity.this);
-	    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
-			addCounterADB.setCancelable(false);
-			addCounterADB.setMessage("Add a name for the first counter");
-			addCounterADB.setView(addNameInput);
-			addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
-	    		public void onClick(DialogInterface dialog, int id) {
-	    			String name = addNameInput.getText().toString();
-	    			// TODO Check if this name already exists in the list of counters and if the name is blank.
-	            	counterList.add(new Counter(MainActivity.this, name, 0));
-	            	adapter.notifyDataSetChanged ();
-	                Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
-	    		}
-	    	});
-			addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-	    		public void onClick(DialogInterface dialog, int id) {
-	    			dialog.cancel();
-	    		}
-	    	});
-			AlertDialog deleteDialog = addCounterADB.create();
-			deleteDialog.show();
-		}
-		else{
-			firstTime = 1;
-		}
 		
 
 	}
@@ -77,39 +50,42 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	@Override
 	public void onResume(){
 		super.onResume();
-			
-		if (firstTime == 1){
-			
-			if (counterList.size() == 0){
-				// Should happen if the counterList is empty
-				final EditText addNameInput = new EditText(MainActivity.this);
-		    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
-				addCounterADB.setCancelable(false);
-				addCounterADB.setMessage("Add a name for the first counter");
-				addCounterADB.setView(addNameInput);
-				addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
-		    		public void onClick(DialogInterface dialog, int id) {
-		    			String name = addNameInput.getText().toString();
-		    			// TODO Check if this name already exists in the list of counters and if the name is blank.
-		            	counterList.add(new Counter(MainActivity.this, name, 0));
-		            	adapter.notifyDataSetChanged ();
-		                Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
-		    		}
-		    	});
-				addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-		    		public void onClick(DialogInterface dialog, int id) {
-		    			dialog.cancel();
-		    		}
-		    	});
-				AlertDialog deleteDialog = addCounterADB.create();
-				deleteDialog.show();
-			}
-			else
-			{
-				adapter.notifyDataSetChanged ();
-			}
+		ArrayList<Counter> tempCounterList = new ArrayList<Counter>();
+		tempCounterList = dataController.readObjectsFromFile(MainActivity.this);
+		
+		if (tempCounterList == null){
+			askForFirstTime();
 		}
+		else{
+			counterList = tempCounterList;
+		}
+
+			
+	}
 	
+	protected void askForFirstTime(){
+		final EditText addNameInput = new EditText(MainActivity.this);
+    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
+		addCounterADB.setCancelable(false);
+		addCounterADB.setMessage("Add a name for the first counter");
+		addCounterADB.setView(addNameInput);
+		addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
+    		public void onClick(DialogInterface dialog, int id) {
+    			String name = addNameInput.getText().toString();
+    			// TODO Check if this name already exists in the list of counters and if the name is blank.
+            	counterList.add(new Counter(MainActivity.this, name, 0));
+            	dataController.writeObjectsToFile(MainActivity.this, counterList);
+            	adapter.notifyDataSetChanged ();
+                Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
+    		}
+    	});
+		addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+    		public void onClick(DialogInterface dialog, int id) {
+    			dialog.cancel();
+    		}
+    	});
+		AlertDialog deleteDialog = addCounterADB.create();
+		deleteDialog.show();
 	}
 	
 	//Called when the user requests the logs for counters.

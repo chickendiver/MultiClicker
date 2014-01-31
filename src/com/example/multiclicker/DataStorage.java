@@ -1,16 +1,19 @@
 package com.example.multiclicker;
 
-//import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
@@ -23,38 +26,68 @@ import com.google.gson.reflect.TypeToken;
 
 public class DataStorage {
 
-	String storageFile = "saveFile.sav";
-	Context context;
-	Type listofCounters = new TypeToken<List<Counter>>() {}.getType();
-	Gson gson = new Gson();
-	
+	// This class was a struggle. Eventually lead to using this as a reference, using ObjectOutputStream:
+	// http://stackoverflow.com/questions/15428304/saving-object-to-file-via-objectoutputstream on Jan. 31
+	final String storageFile = "saveFile.sav";
+	protected Context context;
 
 	public void writeObjectsToFile(Context context, List<Counter> counterList){
 		this.context = context;
-		SharedPreferences prefs = context.getSharedPreferences("jsonObjects", Context.MODE_PRIVATE);
+		try
+		{
+		    File file = new File(storageFile);
+		    if (!file.exists()) {
+		        if (!file.createNewFile()) {
+		           throw new IOException("Unable to create file");
+		        }
+		    }
+		    
+		    FileOutputStream fileout = new FileOutputStream(file);
+		    ObjectOutputStream out = new ObjectOutputStream(fileout);
+		    for (int i=0; i<counterList.size();i++){
+		    	out.writeObject(counterList.get(i));
+		    }
+		    fileout.close();
+		    out.close();
+		} 
+		catch (Exception ex)
+		{
+				ex.printStackTrace();
+		}
 		
-		Type type = new TypeToken<ArrayList<Counter>>(){}.getType();
-		String value = gson.toJson(counterList, type);
-		
-		Editor e = prefs.edit();
-		e.putString("list", value);
-		e.commit();
-		
-
 	}
 	
-	public List<Counter> readObjectsFromFile(Context context){
+	public ArrayList<Counter> readObjectsFromFile(Context context){
 		this.context = context;
-		List<Counter> inputCounterList = new ArrayList<Counter>();
-		Type type = new TypeToken<ArrayList<Counter>>(){}.getType();
+		ArrayList<Counter> inputCounterList = new ArrayList<Counter>();
+		try
+		{
+			File file = new File(storageFile);
+			if (!file.exists()) {
+				return null;
+			}
+			else
+			{
+				FileInputStream filein = new FileInputStream(file);
+			    ObjectInputStream in = new ObjectInputStream(filein);
+			    int objectCount = in.readInt();
+			    for (int i=0; i<objectCount; i++){
+			    	inputCounterList.add((Counter) in.readObject());
+			    }
+			    filein.close();
+			    in.close();
+			}
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
 		
-		SharedPreferences prefs = context.getSharedPreferences("jsonObjects", Context.MODE_PRIVATE);
-		String value = prefs.getString("list", null);
-		GsonBuilder gsonb = new GsonBuilder();
-		Gson gson = gsonb.create();
-		inputCounterList = gson.fromJson(value, type);
+		Collections.sort(inputCounterList, new Comparator<Counter>(){
+			@Override public int compare(Counter c1, Counter c2){
+				return c2.getCounterValue() - c1.getCounterValue();
+			}
+		});
 		
-
 		return inputCounterList;
 		
 	}
