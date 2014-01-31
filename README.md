@@ -22,9 +22,11 @@ To access the log for an individual counter, press and hold the counter's button
 License
 ============
 
-Copyright Bradley Poulette 2014
+Copyright 2014 Bradley Poulette
 
 Implements GPL3 (GNU Public License) license:
+
+http://www.gnu.org/licenses/gpl.html
 
 As per GNU General Public License: "Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed."
