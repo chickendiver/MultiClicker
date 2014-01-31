@@ -31,6 +31,7 @@ public class Counter {
     public void createButtonTextView(View view){
     	this.button = (Button) view.findViewById(R.id.button_text);
     	this.counterCount = (TextView) view.findViewById(R.id.text_view_1);
+    	this.button.setText(counterName);
     }
     
     public String getCounterName() {

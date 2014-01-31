@@ -8,5 +8,6 @@
     <string name="menu_add_counter">Add Counter</string>
     <string name="menu_reset">Reset All</string>
     <string name="menu_get_log">Counter Log</string>
+    <string name="rename_text_hint">New Counter Name</string>
 
 </resources>

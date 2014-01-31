@@ -3,23 +3,30 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
+    <!--  Got this idea for centering the button by using an invisible view from http://stackoverflow.com/questions/11244326/adjust-width-to-half-screen  -->
+    <View android:id="@+id/fakeView"
+       android:layout_width="0dp"
+       android:layout_height="0dp" 
+       android:layout_centerInParent="true"/>
+    
     <Button
         android:id="@+id/button_text"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignLeft="@id/fakeView"
         android:layout_marginRight="5dp"
-        android:text="@string/button_text"
         android:onClick="myClickHandler" />
+    	<!--  android:text="@string/button_text" -->
 
     <TextView
         android:id="@+id/text_view_1"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@id/fakeView"
+        android:layout_centerInParent="true"
         android:textSize="38sp"
-        android:gravity="center"
+        android:gravity="center_vertical|center_horizontal"
         android:layout_toLeftOf="@+id/button_text" />
     
 </RelativeLayout>
