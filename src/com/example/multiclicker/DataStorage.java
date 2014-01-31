@@ -19,6 +19,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,20 +29,23 @@ public class DataStorage {
 
 	// This class was a struggle. Eventually lead to using this as a reference, using ObjectOutputStream:
 	// http://stackoverflow.com/questions/15428304/saving-object-to-file-via-objectoutputstream on Jan. 31
-	final String storageFile = "saveFile.sav";
+	protected String storageFile = "/saveFile";
 	protected Context context;
+	protected File file;
 
 	public void writeObjectsToFile(Context context, List<Counter> counterList){
 		this.context = context;
 		try
-		{
-		    File file = new File(storageFile);
+		{   
+			storageFile = context.getFilesDir().getPath().toString() + storageFile;
+		    file = new File(storageFile);
 		    if (!file.exists()) {
+		    	file.mkdirs();
 		        if (!file.createNewFile()) {
 		           throw new IOException("Unable to create file");
 		        }
 		    }
-		    
+		    //FileOutputStream fileout = context.openFileOutput(storageFile, Context.MODE_PRIVATE);
 		    FileOutputStream fileout = new FileOutputStream(file);
 		    ObjectOutputStream out = new ObjectOutputStream(fileout);
 		    for (int i=0; i<counterList.size();i++){
@@ -68,7 +72,7 @@ public class DataStorage {
 			}
 			else
 			{
-				FileInputStream filein = new FileInputStream(file);
+				FileInputStream filein = context.openFileInput(storageFile);
 			    ObjectInputStream in = new ObjectInputStream(filein);
 			    int objectCount = in.readInt();
 			    for (int i=0; i<objectCount; i++){

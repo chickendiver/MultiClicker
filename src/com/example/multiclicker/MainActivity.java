@@ -57,7 +57,11 @@ public class MainActivity extends Activity { //implements OnClickListener {
 			askForFirstTime();
 		}
 		else{
-			counterList = tempCounterList;
+			counterList.clear();
+			for (int i=0;i<tempCounterList.size();i++){
+				counterList.add(tempCounterList.get(i));
+			}
+			adapter.notifyDataSetChanged ();
 		}
 
 			
@@ -125,6 +129,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
         			String name = addNameInput.getText().toString();
         			// TODO Check if this name already exists in the list of counters and if the name is blank.
                 	counterList.add(new Counter(MainActivity.this, name, 0));
+                	dataController.writeObjectsToFile(MainActivity.this, counterList);
                 	adapter.notifyDataSetChanged ();
                     Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
         		}
@@ -143,6 +148,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
             {
             	counterList.get(i).setCounterValue(0);
             }
+            dataController.writeObjectsToFile(MainActivity.this, counterList);
             adapter.notifyDataSetChanged();
             Toast.makeText(MainActivity.this, "All Counters Reset", Toast.LENGTH_SHORT).show();
             return true;
@@ -161,6 +167,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
 					return c2.getCounterValue() - c1.getCounterValue();
 				}
 			});
+			dataController.writeObjectsToFile(MainActivity.this, counterList);
 			adapter.notifyDataSetChanged();
         	Toast.makeText(MainActivity.this, "Instituted a New World Order", Toast.LENGTH_SHORT).show();
  
