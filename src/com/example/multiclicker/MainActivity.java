@@ -25,6 +25,8 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	/*Throughout this code, you will notice various commented-out implementations of jsonFiler().
 	 * This is because there are errors in how I implemented file I/O using JSON, which are currently
 	 * unresolved.*/
+	
+	
 
 
 	protected ListView counterListView; 

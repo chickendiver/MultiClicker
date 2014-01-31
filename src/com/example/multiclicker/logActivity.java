@@ -21,6 +21,8 @@ public class logActivity extends Activity {
 	
 	//Used to show the user logs about a counter. This is an incomplete class as it stands right now.
 	
+	//The default functionality is to display logs per day. This can be adjusted by using the menu options.
+	
 	protected ArrayList<Counter> counterLogList = new ArrayList<Counter>();
 	protected Counter counterInstance = new Counter(this);
 	protected TextView data;
