@@ -1,7 +1,5 @@
 package com.example.multiclicker;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -64,15 +62,6 @@ public class CounterAdapter extends BaseAdapter {
 			public void onClick(View v){
 				counterInstance.incrementCounter();
 				counterInstance.counterCount.setText(Integer.toString(counterInstance.getCounterValue()));
-				
-				// To order the counters as they're incremented, utilized Collections with custom Comparator, as suggested here:
-				// http://stackoverflow.com/questions/2535124/how-to-sort-an-arraylist-of-objects-by-a-property
-				// TODO Add an "order" button so that you can do this on demand, instead of the current messy implementation
-				Collections.sort(counterList, new Comparator<Counter>(){
-					@Override public int compare(Counter c1, Counter c2){
-						return c1.getCounterValue() - c2.getCounterValue();
-					}
-				});
 				notifyDataSetChanged();
 			}
 		});

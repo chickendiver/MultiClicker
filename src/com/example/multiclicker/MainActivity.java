@@ -1,6 +1,8 @@
 package com.example.multiclicker;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
@@ -99,6 +101,18 @@ public class MainActivity extends Activity { //implements OnClickListener {
         case R.id.menu_log:
             Toast.makeText(MainActivity.this, "Log Access Requested", Toast.LENGTH_SHORT).show();
             return true;
+            
+        case R.id.menu_order:
+        	// To order the counters as they're incremented, utilized Collections with custom Comparator, as suggested here:
+			// http://stackoverflow.com/questions/2535124/how-to-sort-an-arraylist-of-objects-by-a-property
+			// TODO Add an "order" button so that you can do this on demand, instead of the current messy implementation
+			Collections.sort(counterList, new Comparator<Counter>(){
+				@Override public int compare(Counter c1, Counter c2){
+					return c2.getCounterValue() - c1.getCounterValue();
+				}
+			});
+			adapter.notifyDataSetChanged();
+        	Toast.makeText(MainActivity.this, "Instantiated a New World Order", Toast.LENGTH_SHORT).show();
  
         default:
             return super.onOptionsItemSelected(item);
