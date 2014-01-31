@@ -1,5 +1,6 @@
 package com.example.multiclicker;
 
+//import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -12,12 +13,12 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
-// Based largely on article by Pete Houston, accessed on Jan. 21st at:
+// Original structure based on article by Pete Houston, accessed on Jan. 21st at:
 // http://xjaphx.wordpress.com/2011/06/11/create-a-simple-phone-book/
 public class CounterAdapter extends BaseAdapter {
 	private Context context;
 	private List<Counter> counterList;
-	
+	private JSONFiler jsonFiler = new JSONFiler();
 	public CounterAdapter(Context context, List<Counter> counterList) {
 		this.context = context;
 		this.counterList = counterList;
@@ -63,6 +64,8 @@ public class CounterAdapter extends BaseAdapter {
 				counterInstance.incrementCounter();
 				counterInstance.counterCount.setText(Integer.toString(counterInstance.getCounterValue()));
 				notifyDataSetChanged();
+				jsonFiler.writeObjectsToFile(context, counterList);
+				//TODO Check if this actually writes to a file...
 			}
 		});
 		counterInstance.button.setOnLongClickListener(new View.OnLongClickListener() { 

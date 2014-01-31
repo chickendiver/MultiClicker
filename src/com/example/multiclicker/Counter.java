@@ -1,18 +1,22 @@
 package com.example.multiclicker;
 
+import java.io.Serializable;
+
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Counter {
+public class Counter implements Serializable{
 	
 	protected String counterName;
     int counterValue;
     Button button;
     Context context;
     TextView counterCount;
+    //Next line taken from: http://www.dreamincode.net/forums/topic/248522-serialization-in-android/
+    private static final long serialVersionUID = 41052542;
     
     // Constructor
     public Counter(Context context, String counterName, int counterValue) {
