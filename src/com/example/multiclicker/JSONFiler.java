@@ -1,6 +1,6 @@
 package com.example.multiclicker;
 
-import java.io.BufferedReader;
+//import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
@@ -24,6 +24,10 @@ public class JSONFiler {
 	Type listofCounters = new TypeToken<List<Counter>>() {}.getType();
 	Gson gson = new Gson();
 	
+	public void JSONFiler(){
+		//TODO STUB
+	}
+	
 	public void writeObjectsToFile(Context context, List<Counter> counterList){
 		this.context = context;
 		
@@ -45,10 +49,11 @@ public class JSONFiler {
 	
 	public List<Counter> readObjectsFromFile(Context context){
 		this.context = context;
-		List<Counter> counters = new ArrayList<Counter>();
+		//List<Counter> counters = new ArrayList<Counter>();
 		List<Counter> inputCounterList = new ArrayList<Counter>();
 		try{
-			Reader isReader = new InputStreamReader(new FileInputStream((storageFile)));
+			FileInputStream fiStream = new FileInputStream((storageFile));
+			Reader isReader = new InputStreamReader(fiStream);
 			inputCounterList = Collections.synchronizedList((List<Counter>) gson.fromJson(isReader, listofCounters));
 			isReader.close();
 		}

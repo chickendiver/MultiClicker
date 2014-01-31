@@ -34,9 +34,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
 		counterListView = (ListView) findViewById(R.id.listmain);
 		counterListView.setAdapter(adapter);
 		
-		counterList = jsonFiler.readObjectsFromFile(this);
-		
-		if (counterList.size() == 0){
+		if (savedInstanceState == null){
 			// Should happen if the counterList is empty
 			final EditText addNameInput = new EditText(MainActivity.this);
 	    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
@@ -61,7 +59,36 @@ public class MainActivity extends Activity { //implements OnClickListener {
 			deleteDialog.show();
 			jsonFiler.writeObjectsToFile(this, counterList);
 		}
+		else
+		{
+			counterList = jsonFiler.readObjectsFromFile(this);
 		
+			if (counterList.size() == 0){
+				// Should happen if the counterList is empty
+				final EditText addNameInput = new EditText(MainActivity.this);
+		    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
+				addCounterADB.setCancelable(false);
+				addCounterADB.setMessage("Add a name for the first counter");
+				addCounterADB.setView(addNameInput);
+				addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
+		    		public void onClick(DialogInterface dialog, int id) {
+		    			String name = addNameInput.getText().toString();
+		    			// TODO Check if this name already exists in the list of counters and if the name is blank.
+		            	counterList.add(new Counter(MainActivity.this, name, 0));
+		            	adapter.notifyDataSetChanged ();
+		                Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
+		    		}
+		    	});
+				addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+		    		public void onClick(DialogInterface dialog, int id) {
+		    			dialog.cancel();
+		    		}
+		    	});
+				AlertDialog deleteDialog = addCounterADB.create();
+				deleteDialog.show();
+				jsonFiler.writeObjectsToFile(this, counterList);
+			}
+		}
 		
 		
 	}

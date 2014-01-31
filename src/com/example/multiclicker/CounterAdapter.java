@@ -63,7 +63,11 @@ public class CounterAdapter extends BaseAdapter {
 			public void onClick(View v){
 				counterInstance.incrementCounter();
 				counterInstance.counterCount.setText(Integer.toString(counterInstance.getCounterValue()));
+				counterInstance.addCalendarYear();
+				counterInstance.addCalendarWeek();
+				counterInstance.addCalendarDay();
 				notifyDataSetChanged();
+				
 				jsonFiler.writeObjectsToFile(context, counterList);
 				//TODO Check if this actually writes to a file...
 			}
