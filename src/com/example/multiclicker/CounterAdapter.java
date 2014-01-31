@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 //import android.widget.Button;
 //import android.widget.TextView;
+import android.widget.Toast;
 
 // Based largely on article by Pete Houston, accessed on Jan. 21st at:
 // http://xjaphx.wordpress.com/2011/06/11/create-a-simple-phone-book/
@@ -69,6 +70,16 @@ public class CounterAdapter extends BaseAdapter {
 			}
 		});
 		
+		counterInstance.button.setOnLongClickListener(new View.OnLongClickListener() { 
+	        @Override
+	        public boolean onLongClick(View v) {
+	        	Toast.makeText(context, "Long Clicked " ,
+	            Toast.LENGTH_SHORT).show();
+	            return true;
+	        }
+	    });
+
+
 		
 		return convertView;
 	}

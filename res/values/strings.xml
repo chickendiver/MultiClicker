@@ -6,7 +6,7 @@
     <string name="default_counter">0</string>
     <string name="button_text">Click to increment</string>
     <string name="menu_add_counter">Add Counter</string>
-    <string name="menu_reset">Reset</string>
+    <string name="menu_reset">Reset All</string>
     <string name="menu_get_log">Counter Log</string>
 
 </resources>

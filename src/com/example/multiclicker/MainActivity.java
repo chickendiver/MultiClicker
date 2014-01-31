@@ -99,9 +99,12 @@ public class MainActivity extends Activity { //implements OnClickListener {
             return true;
  
         case R.id.menu_reset:
+            for (int i = 0; i < counterList.size(); i++)
+            {
+            	counterList.get(i).setCounterValue(0);
+            }
+            adapter.notifyDataSetChanged();
             Toast.makeText(MainActivity.this, "All Counters Reset", Toast.LENGTH_SHORT).show();
-           // counter = 0;
-           // counterText.setText(Integer.toString(counter));
             return true;
            
         case R.id.menu_log:
