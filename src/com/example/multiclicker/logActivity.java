@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 public class logActivity extends Activity {
 	
+	//Used to show the user logs about a counter. This is an incomplete class as it stands right now.
+	
 	protected ArrayList<Counter> counterLogList = new ArrayList<Counter>();
 	protected Counter counterInstance = new Counter(this);
 	protected TextView data;
@@ -52,7 +54,7 @@ public class logActivity extends Activity {
 		int counter = 0;
 		for (int i = 0, previous = -1; i < calendarYears.size();i++){
 			if (previous == -1){
-				//dataString += ""
+				dataString += "Log for Year" + calendarYears.get(i) + ": \n";
 				counter++;
 				continue;
 			}
@@ -63,9 +65,9 @@ public class logActivity extends Activity {
 			}
 			else
 			{
-				//print counter number
+				dataString += Integer.toString(counter) + "\n";
 				counter = 0;
-				//print new day
+				dataString += "Log for Year" + calendarYears.get(i) + ": \n";
 				counter++;
 				previous = calendarYears.get(i);
 			}
@@ -83,7 +85,7 @@ public class logActivity extends Activity {
 		int counter = 0;
 		for (int i = 0, previous = -1; i < calendarWeeks.size();i++){
 			if (previous == -1){
-				//print out the current day
+				dataString += "Log for Week" + calendarWeeks.get(i) + ": \n";
 				counter++;
 				continue;
 			}
@@ -94,9 +96,9 @@ public class logActivity extends Activity {
 			}
 			else
 			{
-				//print counter number
+				dataString += Integer.toString(counter) + "\n";
 				counter = 0;
-				//print new day
+				dataString += "Log for Week" + calendarWeeks.get(i) + ": \n";
 				counter++;
 				previous = calendarWeeks.get(i);
 			}
@@ -146,7 +148,7 @@ public class logActivity extends Activity {
 		int counter = 0;
 		for (int i = 0, previous = -1; i < calendarHours.size();i++){
 			if (previous == -1){
-				//print out the current day
+				dataString += "Log for Hour" + calendarHours.get(i) + ": \n";
 				counter++;
 				continue;
 			}
@@ -157,9 +159,9 @@ public class logActivity extends Activity {
 			}
 			else
 			{
-				//print counter number
+				dataString += Integer.toString(counter) + "\n";
 				counter = 0;
-				//print new day
+				dataString += "Log for Hour" + calendarHours.get(i) + ": \n";
 				counter++;
 				previous = calendarHours.get(i);
 			}

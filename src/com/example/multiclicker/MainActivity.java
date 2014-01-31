@@ -21,6 +21,10 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	
 	// As a basic starting point, I accessed this resource on Jan. 17th:
 	// http://simpledeveloper.com/how-to-build-simple-counter-android-app/
+	
+	/*Throughout this code, you will notice various commented-out implementations of jsonFiler().
+	 * This is because there are errors in how I implemented file I/O using JSON, which are currently
+	 * unresolved.*/
 
 
 	protected ListView counterListView; 
@@ -65,60 +69,6 @@ public class MainActivity extends Activity { //implements OnClickListener {
 		else{
 			firstTime = 1;
 		}
-			/*
-			final EditText addNameInput = new EditText(MainActivity.this);
-	    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
-			addCounterADB.setCancelable(false);
-			addCounterADB.setMessage("Add a name for the first counter");
-			addCounterADB.setView(addNameInput);
-			addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
-	    		public void onClick(DialogInterface dialog, int id) {
-	    			String name = addNameInput.getText().toString();
-	    			// TODO Check if this name already exists in the list of counters and if the name is blank.
-	            	counterList.add(new Counter(MainActivity.this, name, 0));
-	            	adapter.notifyDataSetChanged ();
-	                Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
-	    		}
-	    	});
-			addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-	    		public void onClick(DialogInterface dialog, int id) {
-	    			dialog.cancel();
-	    		}
-	    	});
-			AlertDialog deleteDialog = addCounterADB.create();
-			deleteDialog.show();
-			jsonFiler.writeObjectsToFile(this, counterList);
-		}*/
-		/*else
-		{
-			//counterList = jsonFiler.readObjectsFromFile(this);
-		
-			if (counterList.size() == 0){
-				// Should happen if the counterList is empty
-				final EditText addNameInput = new EditText(MainActivity.this);
-		    	AlertDialog.Builder addCounterADB = new AlertDialog.Builder(MainActivity.this);
-				addCounterADB.setCancelable(false);
-				addCounterADB.setMessage("Add a name for the first counter");
-				addCounterADB.setView(addNameInput);
-				addCounterADB.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
-		    		public void onClick(DialogInterface dialog, int id) {
-		    			String name = addNameInput.getText().toString();
-		    			// TODO Check if this name already exists in the list of counters and if the name is blank.
-		            	counterList.add(new Counter(MainActivity.this, name, 0));
-		            	adapter.notifyDataSetChanged ();
-		                Toast.makeText(MainActivity.this, "Counter Added", Toast.LENGTH_SHORT).show();
-		    		}
-		    	});
-				addCounterADB.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-		    		public void onClick(DialogInterface dialog, int id) {
-		    			dialog.cancel();
-		    		}
-		    	});
-				AlertDialog deleteDialog = addCounterADB.create();
-				deleteDialog.show();
-				jsonFiler.writeObjectsToFile(this, counterList);
-			}
-		}*/
 		
 
 	}
@@ -163,25 +113,13 @@ public class MainActivity extends Activity { //implements OnClickListener {
 	
 	}
 	
+	//Called when the user requests the logs for counters.
 	public void logActivity(){
 		Intent intent = new Intent(this, logActivity.class);
-	    //EditText editText = (EditText) findViewById(R.id.edit_message);
-	    //String message = editText.getText().toString();
-	    //intent.putExtra(EXTRA_MESSAGE, message);
 	    startActivity(intent);
 
 	}
 		
-	
-	// The following handles how variables are saved
-	// For help implementing this, I accessed the following resource on Jan. 19th
-	// http://stackoverflow.com/questions/151777/saving-activity-state-in-android
-	/*@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-		super.onSaveInstanceState(savedInstanceState);
-		//savedInstanceState.putInt("counter", counter);
-	}*/
-	
 	// The following takes care of inflating the menu when pressed
 	// Resources are stored in res/menu/main.xml
 	@Override
@@ -242,6 +180,7 @@ public class MainActivity extends Activity { //implements OnClickListener {
             return true;
             
         case R.id.menu_order:
+        	
         	// To order the counters as they're incremented, utilized Collections with custom Comparator, as suggested here:
 			// http://stackoverflow.com/questions/2535124/how-to-sort-an-arraylist-of-objects-by-a-property
 			Collections.sort(counterList, new Comparator<Counter>(){
